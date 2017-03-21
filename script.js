@@ -1,25 +1,30 @@
-var stringFormatter = function(string) {
-  var str = string 
-  var dom = '';
-  var indentCount = 0;
-  var charArray = str.split('');
+var str = "id,created,employee(id,firstname,employeeType(id),lastname),location";
+var formatted = '';
+var indentCount = 0;
+var chars = str.split('');
+chars.forEach(function(char) {
+  char === '(' && increment();
+  char === ')' && decrement();
+  (char === ',' || char === '(') ? addDash() : printChar(char);
+  document.getElementById("demo").innerHTML = formatted;
+});
 
-for (var char of charArray) {
-  if (char == '(') {
-      indentCount++;
-    } else if (char == ')') {
-      indentCount--;
-    }
-    if (char == ',' || char == '(') {
-      dom = dom.concat('<br/>');
-      for (var i = 0; i < indentCount; i++ ) {
-        dom = dom.concat('-');
-      }
-    } else if (char != '(' && char != ')') {
-      dom = dom.concat(char);
-    }
+function increment() {
+  return indentCount ++;
 }
-  document.getElementById("demo").innerHTML = dom;
+
+function decrement() {
+  return indentCount --;
 }
-var str = "id,created,employee(id,firstname,employeeType(id),lastname),location"; 
-stringFormatter(str);
+
+function addDash(){
+  formatted = formatted.concat('<br/>')
+  for (var i = 0; i < indentCount; i++ ) {
+    formatted = formatted.concat('-');
+  }
+}
+
+function printChar(char){
+  char !== ')' && (formatted = formatted.concat(char));
+}
+
